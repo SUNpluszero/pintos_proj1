@@ -204,7 +204,7 @@ thread_create (const char *name, int priority,
 
   /* Add to run queue. */
   thread_unblock (t);
-
+  thread_yield (t); /* Project 1 priority scheduling */
   return tid;
 }
 
@@ -486,18 +486,30 @@ alloc_frame (struct thread *t, size_t size)
   return t->stack;
 }
 
+static bool
+compare_priority_of_thread (const struct list_elem *a, const struct list_elem *b, void *aux)  /* Project 1 priority scheduling */
+{
+  struct thread *a_thread = list_entry (a, struct thread, elem);
+  struct thread *b_thread = list_entry (b, struct thread, elem);
+  return a_thread->priority < b_thread->priority;
+}
+
 /* Chooses and returns the next thread to be scheduled.  Should
    return a thread from the run queue, unless the run queue is
    empty.  (If the running thread can continue running, then it
    will be in the run queue.)  If the run queue is empty, return
    idle_thread. */
 static struct thread *
-next_thread_to_run (void) 
+next_thread_to_run (void)   /* Project 1 priority scheduling */
 {
   if (list_empty (&ready_list))
     return idle_thread;
-  else
-    return list_entry (list_pop_front (&ready_list), struct thread, elem);
+  else  /* Return thread which has maximum priority. */
+  {
+    struct list_elem *max = list_max ((&ready_list), compare_priority_of_thread, NULL);
+    list_remove (max);
+    return list_entry (max, struct thread, elem);
+  }
 }
 
 /* Completes a thread switch by activating the new thread's page
