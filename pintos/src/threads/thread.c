@@ -504,8 +504,12 @@ next_thread_to_run (void)   /* Project 1 priority scheduling */
 {
   if (list_empty (&ready_list))
     return idle_thread;
-  else
-    return list_entry (list_max ((&ready_list), compare_priority_of_thread, NULL), struct thread, elem);  /* Return thread which has maximum priority. */
+  else  /* Return thread which has maximum priority. */
+  {
+    struct list_elem *max = list_max ((&ready_list), compare_priority_of_thread, NULL);
+    list_remove (max);
+    return list_entry (max, struct thread, elem);
+  }
 }
 
 /* Completes a thread switch by activating the new thread's page
