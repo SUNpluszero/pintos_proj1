@@ -101,22 +101,34 @@ sema_try_down (struct semaphore *sema)
   return success;
 }
 
+static bool
+compare_priority_of_thread (const struct list_elem *a, const struct list_elem *b, void *aux)  /* Project 1 priority scheduling */
+{
+  struct thread *a_thread = list_entry (a, struct thread, elem);
+  struct thread *b_thread = list_entry (b, struct thread, elem);
+  return a_thread->priority < b_thread->priority;
+}
+
 /* Up or "V" operation on a semaphore.  Increments SEMA's value
    and wakes up one thread of those waiting for SEMA, if any.
 
    This function may be called from an interrupt handler. */
 void
-sema_up (struct semaphore *sema) 
+sema_up (struct semaphore *sema)   /* Project 1 priority scheduling */
 {
   enum intr_level old_level;
 
   ASSERT (sema != NULL);
 
   old_level = intr_disable ();
-  if (!list_empty (&sema->waiters)) 
-    thread_unblock (list_entry (list_pop_front (&sema->waiters),
-                                struct thread, elem));
+  if (!list_empty (&sema->waiters))   /* Modified to unblcok sema's thread which has maximum priority. */
+  {
+    struct list_elem *max = list_max ((&sema->waiters), compare_priority_of_thread, NULL);
+    list_remove (max);
+    thread_unblock (list_entry (max, struct thread, elem));
+  }
   sema->value++;
+  thread_yield();
   intr_set_level (old_level);
 }
 
