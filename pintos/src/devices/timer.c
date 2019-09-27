@@ -122,6 +122,10 @@ bool sleep_less_func(const struct list_elem* a_elem, const struct list_elem* b_e
 
   if (a->waking_ticks < b->waking_ticks)
     return true;
+  else if(a->waking_ticks == b->waking_ticks)
+  {
+    return a->priority > b->priority;
+  }
   else
     return false;
 }

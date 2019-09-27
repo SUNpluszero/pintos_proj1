@@ -101,6 +101,16 @@ sema_try_down (struct semaphore *sema)
   return success;
 }
 
+/*new*/
+static bool
+compare_priority_of_thread(const struct list_elem *a, const struct list_elem *b, void *aux)
+{
+    struct thread *a_thread = list_entry(a, struct thread, elem);
+    struct thread *b_thread = list_entry(b, struct thread, elem);
+
+    return a_thread->priority < b_thread->priority;
+}
+
 /* Up or "V" operation on a semaphore.  Increments SEMA's value
    and wakes up one thread of those waiting for SEMA, if any.
 
@@ -113,12 +123,23 @@ sema_up (struct semaphore *sema)
   ASSERT (sema != NULL);
 
   old_level = intr_disable ();
-  if (!list_empty (&sema->waiters)) 
-    thread_unblock (list_entry (list_pop_front (&sema->waiters),
-                                struct thread, elem));
-  sema->value++;
+  if (!list_empty (&sema->waiters))
+  {
+    struct list_elem *max = list_max((&sema->waiters), compare_priority_of_thread, NULL);
+    list_remove(max);
+    struct thread *max_thread = list_entry (max, struct thread, elem);
+    thread_unblock (max_thread);
+    sema->value++;
+    if(max_thread->priority > thread_current()->priority)
+      thread_yield();
+  }
+  else
+    sema->value++;
+
   intr_set_level (old_level);
 }
+
+
 
 static void sema_test_helper (void *sema_);
 

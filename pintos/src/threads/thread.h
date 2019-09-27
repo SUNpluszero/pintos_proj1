@@ -98,11 +98,13 @@ struct thread
     uint32_t *pagedir;                  /* Page directory. */
 #endif
 
+    /*new*/
+    int64_t waking_ticks;
+
     /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */
 
-    /*new*/
-    int64_t waking_ticks;
+    
   };
 
 /* If false (default), use round-robin scheduler.

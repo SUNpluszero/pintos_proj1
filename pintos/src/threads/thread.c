@@ -205,6 +205,11 @@ thread_create (const char *name, int priority,
   /* Add to run queue. */
   thread_unblock (t);
 
+  if(priority > thread_current()->priority)
+  {
+    thread_yield();
+  }
+
   return tid;
 }
 
@@ -339,7 +344,11 @@ thread_foreach (thread_action_func *func, void *aux)
 void
 thread_set_priority (int new_priority) 
 {
-  thread_current ()->priority = new_priority;
+  int old_priority = thread_current()->priority;
+  thread_current()->priority = new_priority;
+
+  if(new_priority < old_priority)
+    thread_yield();
 }
 
 /* Returns the current thread's priority. */
@@ -485,6 +494,15 @@ alloc_frame (struct thread *t, size_t size)
   t->stack -= size;
   return t->stack;
 }
+/*new*/
+static bool
+compare_priority_of_thread(const struct list_elem *a, const struct list_elem *b, void *aux)
+{
+    struct thread *a_thread = list_entry(a, struct thread, elem);
+    struct thread *b_thread = list_entry(b, struct thread, elem);
+
+    return a_thread->priority < b_thread->priority;
+}
 
 /* Chooses and returns the next thread to be scheduled.  Should
    return a thread from the run queue, unless the run queue is
@@ -497,7 +515,12 @@ next_thread_to_run (void)
   if (list_empty (&ready_list))
     return idle_thread;
   else
-    return list_entry (list_pop_front (&ready_list), struct thread, elem);
+  {
+    /*new*/
+    struct list_elem *max = list_max ((&ready_list), compare_priority_of_thread, NULL);
+    list_remove(max);
+    return list_entry (max, struct thread, elem);
+  }
 }
 
 /* Completes a thread switch by activating the new thread's page
