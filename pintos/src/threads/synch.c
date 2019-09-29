@@ -274,14 +274,6 @@ struct semaphore_elem
     struct semaphore semaphore;         /* This semaphore. */
   };
 
-/* new */
-struct lock_elem 
-  {
-    struct list_elem elem; 
-    struct lock lock;
-    int priority;
-  };
-
 /* Initializes condition variable COND.  A condition variable
    allows one piece of code to signal a condition and cooperating
    code to receive the signal and act upon it. */
