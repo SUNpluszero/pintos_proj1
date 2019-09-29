@@ -346,7 +346,7 @@ thread_set_priority (int new_priority)
 {
   int old_priority = thread_current()->priority;
   thread_current()->priority = new_priority;
-
+  thread_current()->origin_priority = new_priority;
   if(new_priority < old_priority)
     thread_yield();
 }
@@ -476,6 +476,11 @@ init_thread (struct thread *t, const char *name, int priority)
   t->stack = (uint8_t *) t + PGSIZE;
   t->priority = priority;
   t->magic = THREAD_MAGIC;
+   /* new */
+  t->waking_ticks = 0;
+  t->origin_priority = priority;
+  lock_init(&t->acquiring_lock); 
+  list_init(&t->holding_locks);
 
   old_level = intr_disable ();
   list_push_back (&all_list, &t->allelem);
