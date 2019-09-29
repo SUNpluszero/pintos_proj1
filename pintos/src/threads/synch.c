@@ -200,7 +200,6 @@ lock_init (struct lock *lock)
 
   lock->holder = NULL;
   sema_init (&lock->semaphore, 1);
-  lock_priority = 0;
 }
 
 /* Acquires LOCK, sleeping until it becomes available if
@@ -273,6 +272,14 @@ struct semaphore_elem
   {
     struct list_elem elem;              /* List element. */
     struct semaphore semaphore;         /* This semaphore. */
+  };
+
+/* new */
+struct lock_elem 
+  {
+    struct list_elem elem; 
+    struct lock lock;
+    int priority;
   };
 
 /* Initializes condition variable COND.  A condition variable
