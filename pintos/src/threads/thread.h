@@ -100,7 +100,9 @@ struct thread
 
     /*new*/
     int64_t waking_ticks;
-
+    struct lock acquiring_lock; 
+    struct list holding_locks;
+    int origin_priority;
     /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */
 
