@@ -341,29 +341,51 @@ thread_foreach (thread_action_func *func, void *aux)
     }
 }
 
+/*new*/
+static bool
+compare_priority_of_lock(const struct list_elem *a, const struct list_elem *b, void *aux)
+{
+    struct thread *a_priority = list_entry(a, struct lock, elem)->priority;
+    struct thread *b_priority = list_entry(b, struct lock, elem)->priority;
+    return a_priority < b_priority;
+}
+
+
 /* Sets the current thread's priority to NEW_PRIORITY. */
 void
 thread_set_priority (int new_priority) 
 {
-  int old_priority = thread_current()->priority;
-  int ori_priority = thread_current()->priority_original;
-  /*if current thread got donation*/
-  if(old_priority != ori_priority){
-    if(new_priority > old_priority){
-      thread_current()->priority = new_priority;
-      thread_current()->priority_original = new_priority;
-    }else{
-      thread_current()->priority_original = new_priority;
-    }
-  }else{
-    thread_current()->priority = new_priority;
-    /*proj1*/
-    thread_current()->priority_original = new_priority;
+  if (list_empty (&thread_current()->holding_lock))
+  {
+     thread_current()->priority = new_priority;
+     thread_current()->priority_original = new_priority;
+     if(new_priority < old_priority)
+       thread_yield();
   }
-  
-  /*if higher priority*/
-  if(new_priority > old_priority)
-    thread_yield();
+  else
+  {
+     if(thread_current()->priority_original != old_priority)
+     {
+        thread_current()->priority_original = new_priority;
+        if(new_priority > old_priority)
+           thread_current()->priority = new_priority;
+     }
+     else
+     {
+        thread_current()->priority_original = new_priority;
+        if(new_priority >= old_priority)
+           thread_current()->priority = new_priority;
+        else
+        {
+           donation_priority = list_entry(list_max(&thread_current()->holding_lock, compare_priority_of_lock, NULL), struct lock, elem) -> priority
+           if(new_priority < donation_priority)
+              thread_current()->priority = donation_priority;
+           else
+              thread_current()->priority = new_priority;
+           thread_yield();
+        }
+     }
+  }
 }
 
 /* Returns the current thread's priority. */
