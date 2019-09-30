@@ -355,7 +355,7 @@ compare_priority_of_lock(const struct list_elem *a, const struct list_elem *b, v
 void
 thread_set_priority (int new_priority) 
 {
-  if (list_empty (&thread_current()->holding_locks))
+  if (list_empty (&thread_current()->holding_lock))
   {
      thread_current()->priority = new_priority;
      thread_current()->priority_original = new_priority;
@@ -377,7 +377,7 @@ thread_set_priority (int new_priority)
            thread_current()->priority = new_priority;
         else
         {
-           donation_priority = list_entry(list_max(&thread_current()->holding_locks, compare_priority_of_lock, NULL), struct lock_elem, elem) -> priority
+           donation_priority = list_entry(list_max(&thread_current()->holding_lock, compare_priority_of_lock, NULL), struct lock_elem, elem) -> priority
            if(new_priority < donation_priority)
               thread_current()->priority = donation_priority;
            else
