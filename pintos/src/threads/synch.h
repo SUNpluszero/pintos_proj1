@@ -21,10 +21,10 @@ void sema_self_test (void);
 /* Lock. */
 struct lock 
   {
+    struct list_elem lock_elem;      /* Proj1 : - List element(for priority list). */
     struct thread *holder;      /* Thread holding lock (for debugging). */
     struct semaphore semaphore; /* Binary semaphore controlling access. */
-    struct list_elem elem;
-    int max_priority;
+    int max_priority;           /* Proj1 : - Max priority of its semaphore threads*/
   };
 
 void lock_init (struct lock *);
