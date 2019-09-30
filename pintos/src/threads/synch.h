@@ -28,10 +28,8 @@ struct lock_elem
 /* Lock. */
 struct lock 
   {
-    struct list_elem lock_elem;      /* Proj1 : - List element(for priority list). */
     struct thread *holder;      /* Thread holding lock (for debugging). */
     struct semaphore semaphore; /* Binary semaphore controlling access. */
-    int max_priority;           /* Proj1 : - Max priority of its semaphore threads*/
   };
 
 void lock_init (struct lock *);
