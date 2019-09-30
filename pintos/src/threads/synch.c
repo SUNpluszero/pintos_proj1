@@ -236,15 +236,6 @@ priority_donation(struct lock *lock)
    interrupt handler.  This function may be called with
    interrupts disabled, but interrupts will be turned back on if
    we need to sleep. */
-/*Proj1*/
-static bool
-compare_thread(const struct list_elem *a, const struct list_elem *b, void *aux)
-{
-  struct thread *a_thread = list_entry(a, struct thread, elem);
-  struct thread *b_thread = list_entry(b, struct thread, elem);
-
-  return a_thread->priority < b_thread->priority;
-}
 
 void
 lock_acquire (struct lock *lock)
@@ -254,10 +245,10 @@ lock_acquire (struct lock *lock)
   ASSERT (!lock_held_by_current_thread (lock));
 
   /*Proj1 if holder exist, donate!*/
-  if(lock->holder != NULL){
-    if(lock->max_priority < thread_current()->priority){
+  if(lock->holder != NULL)
+  {
+    if(lock->max_priority < thread_current()->priority)
       lock->max_priority = thread_current()->priority;
-    } 
     thread_current()->blocking_lock = lock;
     priority_donation(lock);
   }
@@ -266,9 +257,9 @@ lock_acquire (struct lock *lock)
   lock->holder = thread_current();
   thread_current()->blocking_lock = NULL;
   list_push_back(&thread_current()->holding_lock, &lock->lock_elem);
-  struct list_elem *max = list_max(&(&lock->semaphore)->waiters,compare_thread,NULL);
-  struct thread *mt = list_entry(max, struct thread, elem);
-  lock->max_priority = mt->priority; 
+  struct list_elem *max = list_max(&(&lock->semaphore)->waiters, compare_priority_of_thread, NULL);
+  struct thread *max_thread = list_entry(max, struct thread, elem);
+  lock->max_priority = max_thread->priority; 
 }
 
 /* Tries to acquires LOCK and returns true if successful or false
@@ -309,17 +300,17 @@ priority_retrieve(struct lock *lock)
   ASSERT (lock_held_by_current_thread (lock));
   
   struct thread *t = thread_current();
-  if(list_empty(&t->holding_lock)){
+  if(list_empty(&t->holding_lock))
     t->priority = t->priority_original;
-  }else{
+  else
+  {
     struct list_elem *max = list_max(&t->holding_lock,compare_lock, NULL);
-    struct lock *mlock = list_entry(max, struct lock, lock_elem);
-    int max_p = mlock->max_priority;
-    if(t->priority_original < max_p){
+    struct lock *max_lock = list_entry(max, struct lock, lock_elem);
+    int max_p = max_lock->max_priority;
+    if(t->priority_original < max_p)
       t->priority = max_p;
-    }else{
+    else
       t->priority = t->priority_original;
-    }
   }
 }
 
@@ -336,9 +327,8 @@ lock_release (struct lock *lock)
 
   list_remove(&lock->lock_elem);
   struct thread *t = thread_current();
-  if(t->priority != t->priority_original){
+  if(t->priority != t->priority_original)
     priority_retrieve(lock);
-  }
   lock->holder = NULL;
   sema_up (&lock->semaphore);
 }
