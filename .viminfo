@@ -8,8 +8,9 @@
 # hlsearch on (H) or off (h):
 ~h
 # Command Line History (newest to oldest):
-:wq
 :q
+:wq
+:q!
 :w
 
 # Search String History (newest to oldest):
@@ -23,24 +24,32 @@
 # Registers:
 
 # File marks:
-'0  566  47  ~/pintos/src/utils/pintos
-'1  1  0  ~/pintos/src/tests/threads/alarm-negative.c
-'2  930  0  ~/pintos/src/threads/result
-'3  1  0  ~/pintos/src/threads/build/grade
-'4  818  0  ~/pintos/src/threads/build/grade
-'5  1  0  ~/pintos/src/threads/build/results
-'6  10  61  ~/pintos/src/tests/threads/Make.tests
-'7  122  24  ~/.bashrc
-'8  120  43  ~/.bashrc
-'9  1  1  ~/pintos/src/tests/threads/Make.tests
+'0  401  0  ~/pintos/src/threads/synch.c
+'1  145  0  ~/pintos/src/threads/thread.c
+'2  1  0  ~/pintos/src/threads/result
+'3  486  0  ~/pintos/src/threads/result
+'4  21  0  ~/pintos/src/threads/result
+'5  1  0  ~/pintos/src/threads/thread.c
+'6  91  0  ~/pintos/src/threads/thread.c
+'7  566  47  ~/pintos/src/utils/pintos
+'8  1  0  ~/pintos/src/tests/threads/alarm-negative.c
+'9  930  0  ~/pintos/src/threads/result
 
 # Jumplist (newest first):
+-'  401  0  ~/pintos/src/threads/synch.c
+-'  1  0  ~/pintos/src/threads/synch.c
+-'  145  0  ~/pintos/src/threads/thread.c
+-'  1  0  ~/pintos/src/threads/thread.c
+-'  1  0  ~/pintos/src/threads/result
+-'  486  0  ~/pintos/src/threads/result
+-'  21  0  ~/pintos/src/threads/result
+-'  4  0  ~/pintos/src/threads/thread.c
+-'  91  0  ~/pintos/src/threads/thread.c
 -'  566  47  ~/pintos/src/utils/pintos
 -'  1  0  ~/pintos/src/utils/pintos
 -'  1  0  ~/pintos/src/tests/threads/alarm-negative.c
 -'  930  0  ~/pintos/src/threads/result
 -'  553  0  ~/pintos/src/threads/result
--'  1  0  ~/pintos/src/threads/result
 -'  1  0  ~/pintos/src/threads/build/grade
 -'  818  0  ~/pintos/src/threads/build/grade
 -'  1  0  ~/pintos/src/threads/build/results
@@ -126,16 +135,22 @@
 -'  40  39  ~/pintos/src/tests/threads/tests.c
 -'  5  34  ~/pintos/src/tests/threads/Grading
 -'  122  24  ~/.bashrc
--'  10  61  ~/pintos/src/tests/threads/Make.tests
--'  1  1  ~/pintos/src/tests/threads/Make.tests
--'  122  24  ~/.bashrc
--'  1  0  ~/.bashrc
--'  120  43  ~/.bashrc
--'  1  0  ~/pintos/src/tests/threads/Grading
--'  10  61  ~/pintos/src/tests/threads/Make.tests
--'  1  1  ~/pintos/src/tests/threads/Make.tests
 
 # History of marks within files (newest to oldest):
+
+> ~/pintos/src/threads/synch.c
+	"	401	0
+
+> ~/pintos/src/threads/thread.c
+	"	145	0
+	^	1	1
+	.	1	0
+	+	3	0
+	+	2	0
+	+	1	0
+
+> ~/pintos/src/threads/result
+	"	1	0
 
 > ~/pintos/src/utils/pintos
 	"	566	47
@@ -145,9 +160,6 @@
 
 > ~/pintos/src/tests/threads/alarm-negative.c
 	"	1	0
-
-> ~/pintos/src/threads/result
-	"	930	0
 
 > ~/pintos/src/threads/build/grade
 	"	1	0

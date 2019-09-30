@@ -88,17 +88,22 @@ struct thread
     char name[16];                      /* Name (for debugging purposes). */
     uint8_t *stack;                     /* Saved stack pointer. */
     int priority;                       /* Priority. */
+    int priority_original;              /* Original Priority. */
     struct list_elem allelem;           /* List element for all threads list. */
 
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
+
+    /*proj1 - priority : lock*/
+    struct list holding_lock;          /*proj1 - priority : lock that like*/
+    struct lock *blocking_lock;      /*proj1 - priority : i want that lock*/
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
 #endif
 
-    /*new*/
+    /*proj1 - alarm_clock : remaining ticks*/
     int64_t waking_ticks;
 
     /* Owned by thread.c. */

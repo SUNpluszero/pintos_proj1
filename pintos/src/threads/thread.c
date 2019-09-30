@@ -204,7 +204,8 @@ thread_create (const char *name, int priority,
 
   /* Add to run queue. */
   thread_unblock (t);
-
+  /*Proj1
+  if newly created thread has higher priority then current thread */
   if(priority > thread_current()->priority)
   {
     thread_yield();
@@ -345,9 +346,23 @@ void
 thread_set_priority (int new_priority) 
 {
   int old_priority = thread_current()->priority;
-  thread_current()->priority = new_priority;
-
-  if(new_priority < old_priority)
+  int ori_priority = thread_current()->priority_original;
+  /*if current thread got donation*/
+  if(old_priority != ori_priority){
+    if(new_priority > old_priority){
+      thread_current()->priority = new_priority;
+      thread_current()->priority_original = new_priority;
+    }else{
+      thread_current()->priority_original = new_priority;
+    }
+  }else{
+    thread_current()->priority = new_priority;
+    /*proj1*/
+    thread_current()->priority_original = new_priority;
+  }
+  
+  /*if higher priority*/
+  if(new_priority > old_priority)
     thread_yield();
 }
 
@@ -474,7 +489,12 @@ init_thread (struct thread *t, const char *name, int priority)
   t->status = THREAD_BLOCKED;
   strlcpy (t->name, name, sizeof t->name);
   t->stack = (uint8_t *) t + PGSIZE;
+  /*proj1 initialize*/
   t->priority = priority;
+  t->priority_original = priority;
+  t->waking_ticks = 0;
+  lock_init(&t->blocking_lock);
+  list_init(&t->holding_lock);
   t->magic = THREAD_MAGIC;
 
   old_level = intr_disable ();

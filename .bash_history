@@ -206,3 +206,95 @@ cd build
 pintos --gdb -- run alarm-multiple
 cd pintos/src/threads/build
 pintos-gdb kernel.o
+cd pintos/src/threads/build
+make check
+cd /pintos/src/threads/build
+ls
+cd pintos/src/threads/build
+make check
+make clean
+make check
+git init
+git add.
+git add .
+git commit -m "commit message"
+git config --global user.email "sun000@kaist.ac.kr"
+git config --global user.name "sunnypintos"
+git init
+git commit -m "alarm done"
+git push -u origin master
+git remote add origin repostory
+git push -u origin master
+git remote add origin git@github.com:SUNpluszero/pintos_proj1.git
+git remote rm origin
+git remote add origin git@github.com:SUNpluszero/pintos_proj1.git
+git push -u origin master
+git remote rm origin
+git remote add origin git@github.com:SUNpluszero/pintos_proj1.git
+git push -u origin master
+git remote rm origin
+git remote add origin https://github.com/SUNpluszero/pintos_proj1.git
+git push -u origin master
+ls
+cd pintos/src/threads
+ls
+vim thread.c
+cd pintos.
+cd pintos/
+ls
+cd src/threads
+make clean
+make check
+make clean
+make check
+cd ..
+git commit -m "alarm, priority, sema"
+git add *
+git commit -m "alarm, priority, sema"
+git push origin master
+cd pintos/src/threads
+ls
+vim result
+cd ..
+git push origin master
+cd pintos/src/threads
+ls
+cd clean
+cd check > result
+make clean
+make check > result
+vim result
+make grade
+make clean
+make check
+make grade > result
+vim result
+cd ..
+git merge Isatherune-patch-1
+git checkout -b proj1-middle
+git push origin proj1-middle
+cd pintos/src/threads
+vim thread.c
+cd pintos/src/threads
+make clean
+make check
+cd pintos/src/threads
+make clean
+make check
+make clean
+make check
+make clean
+make check
+make clean
+make check
+make clean
+make check
+git checkout -b proj1-pri_donation
+cd ..
+cd..
+cd //
+cd ..
+cd pintos
+ls
+cd ~/pintos/src/thread
+exit
