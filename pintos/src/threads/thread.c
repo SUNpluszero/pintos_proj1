@@ -345,8 +345,8 @@ thread_foreach (thread_action_func *func, void *aux)
 static bool
 compare_priority_of_lock(const struct list_elem *a, const struct list_elem *b, void *aux)
 {
-    struct thread *a_priority = list_entry(a, struct lock_elem, elem)->priority;
-    struct thread *b_priority = list_entry(b, struct lock_elem, elem)->priority;
+    struct thread *a_priority = list_entry(a, struct lock, elem)->priority;
+    struct thread *b_priority = list_entry(b, struct lock, elem)->priority;
     return a_priority < b_priority;
 }
 
@@ -377,7 +377,7 @@ thread_set_priority (int new_priority)
            thread_current()->priority = new_priority;
         else
         {
-           donation_priority = list_entry(list_max(&thread_current()->holding_lock, compare_priority_of_lock, NULL), struct lock_elem, elem) -> priority
+           donation_priority = list_entry(list_max(&thread_current()->holding_lock, compare_priority_of_lock, NULL), struct lock, elem) -> priority
            if(new_priority < donation_priority)
               thread_current()->priority = donation_priority;
            else
