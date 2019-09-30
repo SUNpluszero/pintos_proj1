@@ -24,9 +24,9 @@
 # Registers:
 
 # File marks:
-'0  401  0  ~/pintos/src/threads/synch.c
-'1  145  0  ~/pintos/src/threads/thread.c
-'2  1  0  ~/pintos/src/threads/result
+'0  1  0  ~/pintos/src/threads/result
+'1  401  0  ~/pintos/src/threads/synch.c
+'2  145  0  ~/pintos/src/threads/thread.c
 '3  486  0  ~/pintos/src/threads/result
 '4  21  0  ~/pintos/src/threads/result
 '5  1  0  ~/pintos/src/threads/thread.c
@@ -36,11 +36,11 @@
 '9  930  0  ~/pintos/src/threads/result
 
 # Jumplist (newest first):
+-'  1  0  ~/pintos/src/threads/result
 -'  401  0  ~/pintos/src/threads/synch.c
 -'  1  0  ~/pintos/src/threads/synch.c
 -'  145  0  ~/pintos/src/threads/thread.c
 -'  1  0  ~/pintos/src/threads/thread.c
--'  1  0  ~/pintos/src/threads/result
 -'  486  0  ~/pintos/src/threads/result
 -'  21  0  ~/pintos/src/threads/result
 -'  4  0  ~/pintos/src/threads/thread.c
@@ -133,10 +133,11 @@
 -'  1  0  ~/pintos/src/tests/threads/tests.c
 -'  36  1  ~/pintos/src/tests/threads/tests.h
 -'  40  39  ~/pintos/src/tests/threads/tests.c
--'  5  34  ~/pintos/src/tests/threads/Grading
--'  122  24  ~/.bashrc
 
 # History of marks within files (newest to oldest):
+
+> ~/pintos/src/threads/result
+	"	1	0
 
 > ~/pintos/src/threads/synch.c
 	"	401	0
@@ -148,9 +149,6 @@
 	+	3	0
 	+	2	0
 	+	1	0
-
-> ~/pintos/src/threads/result
-	"	1	0
 
 > ~/pintos/src/utils/pintos
 	"	566	47

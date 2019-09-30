@@ -298,3 +298,32 @@ cd pintos
 ls
 cd ~/pintos/src/thread
 exit
+ls
+git push origin proj1-pri_donation
+git add .
+git push origin proj1-pri_donation
+cd pintos/src/threads
+make clean
+make check
+cd ..
+git push origin --delete proj1-pri_donation
+git add .
+git checkout proj1-donation
+git checkout -b proj1-donation
+git push -u origin proj1-donation
+git push origin master
+cd pintos/src/thread
+cd pintos/src/thread/
+ls
+cd pintos/src
+cd threads
+ls
+vim synch.c
+cd ..
+cd..
+cd ..
+ls
+git add .
+git commmit -m "donation"
+git commit -m "donation"
+git push -u origin proj1-donation

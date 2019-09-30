@@ -341,28 +341,58 @@ thread_foreach (thread_action_func *func, void *aux)
     }
 }
 
+/*Proj1*/
+static bool
+compare_lock(const struct list_elem *a, const struct list_elem *b, void *aux)
+{
+  struct lock *a_lock = list_entry(a, struct lock, lock_elem);
+  struct lock *b_lock = list_entry(b, struct lock, lock_elem);
+
+  return a_lock->max_priority < b_lock->max_priority;
+}
+
 /* Sets the current thread's priority to NEW_PRIORITY. */
 void
 thread_set_priority (int new_priority) 
 {
-  int old_priority = thread_current()->priority;
-  int ori_priority = thread_current()->priority_original;
+
+  //if current have holding lock and if it is great
+  struct thread *t = thread_current();
+  int old_priority = t->priority;  
+  int ori_priority = t->priority_original;
   /*if current thread got donation*/
   if(old_priority != ori_priority){
     if(new_priority > old_priority){
-      thread_current()->priority = new_priority;
-      thread_current()->priority_original = new_priority;
+      t->priority = new_priority;
+      t->priority_original = new_priority;  //change because higher than donation
     }else{
-      thread_current()->priority_original = new_priority;
+      t->priority_original = new_priority;  //priority did not changed, since donation is higher
     }
-  }else{
-    thread_current()->priority = new_priority;
-    /*proj1*/
-    thread_current()->priority_original = new_priority;
+  }else{//no donation check it check it
+    if(new_priority > old_priority){
+      t->priority = new_priority;
+      t->priority_original = new_priority;
+    }else if(list_empty(&t->holding_lock)){   //new is smaller!!!
+      t->priority = new_priority;
+      t->priority_original = new_priority;
+    }
+    else{  //compare lock list 
+      struct list_elem *max = list_max(&t->holding_lock,compare_lock, NULL);
+      struct lock *mlock = list_entry(max, struct lock, lock_elem);
+      int max_p = mlock->max_priority;
+      if(new_priority < max_p){
+        t->priority = max_p;
+        t->priority_original = new_priority;
+      }else{
+        t->priority = new_priority;
+        t->priority_original = new_priority;
+      }
+    }
+
   }
   
   /*if higher priority*/
-  if(new_priority > old_priority)
+  if(new_priority < old_priority)
     thread_yield();
 }
 
@@ -493,7 +523,7 @@ init_thread (struct thread *t, const char *name, int priority)
   t->priority = priority;
   t->priority_original = priority;
   t->waking_ticks = 0;
-  lock_init(&t->blocking_lock);
+  t->blocking_lock = NULL;
   list_init(&t->holding_lock);
   t->magic = THREAD_MAGIC;
 
